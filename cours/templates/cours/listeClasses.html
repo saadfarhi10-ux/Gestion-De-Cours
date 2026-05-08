@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2>Liste des Classes</h2>
+  <a href="/cours/ajoutClasse/" class="btn btn-success">+ Ajouter une classe</a>
+</div>
+
+<table class="table table-bordered table-hover">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Nom de la classe</th>
+      <th>Niveau</th>
+      <th>Effectif</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for c in classes %}
+    <tr>
+      <td>{{ c.id }}</td>
+      <td>{{ c.nom_classe }}</td>
+      <td>{{ c.niveau }}</td>
+      <td>{{ c.effectif }}</td>
+      <td>
+        <a href="/cours/deleteClasse/{{ c.id }}/" class="btn btn-sm btn-danger"
+           onclick="return confirm('Supprimer cette classe ?')">Supprimer</a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="5" class="text-center">Aucune classe enregistrée.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

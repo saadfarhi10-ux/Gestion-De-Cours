@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2>Modifier le cours : {{ cours.titre }}</h2>
+  <a href="/cours/" class="btn btn-secondary">← Retour</a>
+</div>
+
+<div class="card" style="max-width: 600px;">
+  <div class="card-body">
+    <form method="POST">
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="mb-3">
+          <label class="form-label fw-bold">{{ field.label }}</label>
+          {{ field }}
+          {% if field.errors %}
+            <div class="text-danger">{{ field.errors }}</div>
+          {% endif %}
+        </div>
+      {% endfor %}
+      <button type="submit" class="btn btn-warning">Enregistrer</button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
