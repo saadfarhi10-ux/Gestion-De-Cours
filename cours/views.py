@@ -5,7 +5,33 @@ from .forms import GestionCours, GestionProfesseur, GestionClasse
 
 def index(request):
     cours = Cours.objects.all()
-    return render(request, 'cours/index.html', {'cours': cours})
+
+    q = request.GET.get('q', '').strip()
+    professeur_id = request.GET.get('professeur', '')
+    classe_id = request.GET.get('classe', '')
+    date = request.GET.get('date', '')
+
+    if q:
+        cours = cours.filter(titre__icontains=q)
+    if professeur_id:
+        cours = cours.filter(professeur__id=professeur_id)
+    if classe_id:
+        cours = cours.filter(classe__id=classe_id)
+    if date:
+        cours = cours.filter(date_debut=date)
+
+    professeurs = Professeur.objects.all()
+    classes = Classe.objects.all()
+
+    return render(request, 'cours/index.html', {
+        'cours': cours,
+        'professeurs': professeurs,
+        'classes': classes,
+        'q': q,
+        'professeur_id': professeur_id,
+        'classe_id': classe_id,
+        'date': date,
+    })
 
 
 def ajoutCours(request):
@@ -60,7 +86,6 @@ def deleteCours(request, cours_id):
 def listeProfesseurs(request):
     professeurs = Professeur.objects.all()
     return render(request, 'cours/listeProfesseurs.html', {'professeurs': professeurs})
-
 
 def listeClasses(request):
     classes = Classe.objects.all()
